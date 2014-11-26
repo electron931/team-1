@@ -10,6 +10,7 @@ index.html
 npm-debug.log
 server/savedDocuments
 dist
+views
 
 #deployment
 .deploy

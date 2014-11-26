@@ -137,9 +137,11 @@ gulp.task('index.html', function () {
       .pipe(concat('index.js'))
       .pipe(wrap('<script><%= contents %></script>'))
   )
-    .pipe(concat('index.html'))
-    .pipe(gulp.dest('./'))
+    .pipe(concat('editor.html'))
+    .pipe(gulp.dest('./views'))
 })
+
+
 
 gulp.task('watch', function () {
   watch([ 'blocks/**/*.html'
