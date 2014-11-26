@@ -2,7 +2,7 @@
  * Created by Mantsevich on 21.10.2014.
  */
 var log = require('npmlog')
-  , Users = require('./users')
+  , Users = require('./models/users')
   , logPrefix = 'Socket Server'
   , WebSocketServer = require('ws').Server
 

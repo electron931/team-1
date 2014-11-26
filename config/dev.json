@@ -5,5 +5,15 @@
   },
   "socket_server": {
     "port": 7900
-  }
+  },
+  "mongoose" : {
+        "uri" : "mongodb://localhost/wingpad",
+        "options" : {
+            "server" : {
+                "socketOptions" : {
+                    "keepAlive" : 1
+                }
+            }
+        }
+    }
 }
