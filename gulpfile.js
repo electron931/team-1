@@ -12,6 +12,7 @@ var gulp = require('gulp')
   , runSequence = require('run-sequence')
   , env = process.env.NODE_ENV || 'DEV'
 
+
 gulp.task('config', function () {
 
   var srcConfig = ''
@@ -31,75 +32,13 @@ gulp.task('config', function () {
     .pipe(gulp.dest('./config'))
 })
 
-gulp.task('index.min.html', function () {
-  var opts = {comments:true,spare:true};
-  streamqueue(
-    { objectMode: true }
-    , gulp.src('blocks/**/*.html')
-      .pipe(minifyHTML(opts))
-      .pipe(gulp.dest('./dist/html'))
-    , gulp.src(['blocks/**/*.css', 'libs/codemirror/lib/codemirror.css'])
-      .pipe(minifyCSS({keepBreaks:false}))
-      .pipe(gulp.dest('./dist/css'))
-    , gulp.src(
-      [ 'blocks/**/*.js'
-      , 'libs/codemirror/lib/codemirror.js'
-      , 'libs/share-codemirror/share-codemirror.js'
-      , 'libs/codemirror/mode/javascript/javascript.js'
-      ]
-    )
-      .pipe(uglify())
-      .pipe(gulp.dest('dist/js'))
-    , gulp.src('dist/html/page/page.html')
-    , gulp
-      .src('dist/html/**/*.html')
-      .pipe(gulpIgnore.exclude('**/page.html'))
-      .pipe(wrap('<script '
-          + 'type="template" '
-          + 'id="<%= file.path.replace(/^.*\\/([^/]+)$/, \'$1\') %>">'
-          + '<%= file.contents %>'
-          + '</script>'
-      ))
-    , gulp
-        .src(
-          [ 'dist/css/codemirror.css'
-          , 'libs/switchery/dist/switchery.min.css'
-          , 'dist/css/**/*.css'
-          ]
-        )
-        .pipe(concat('index.css'))
-        .pipe(autoprefixer(
-          { browsers: ['last 3 versions']
-          , cascade: true
-          }
-        ))
-        .pipe(wrap('<style><%= contents %></style>'))
-    , gulp
-      .src(
-        [ 'libs/jquery/dist/jquery.min.js'
-        , 'libs/lodash/dist/lodash.min.js'
-        , 'dist/js/codemirror.js'
-        , 'node_modules/share/webclient/share.js'
-        , 'dist/js/share-codemirror.js'
-        , 'dist/js/javascript.js'
-        , 'libs/switchery/dist/switchery.min.js'
-        , 'dist/js/page/page.js'
-        , 'dist/js/**/*.js'
-        ]
-      )
-      .pipe(concat('index.js'))
-      .pipe(wrap('<script><%= contents %></script>'))
-  )
-    .pipe(concat('index.html'))
-    .pipe(gulp.dest('./'))
-})
 
-gulp.task('index.html', function () {
+gulp.task('editor.html', function () {
   streamqueue(
     { objectMode: true }
-    , gulp.src('blocks/page/page.html')
+    , gulp.src('pages/editor/blocks/page/page.html')
     , gulp
-      .src('blocks/**/*.html')
+      .src('pages/editor/blocks/**/*.html')
       .pipe(gulpIgnore.exclude('**/page.html'))
       .pipe(wrap('<script '
           + 'type="template" '
@@ -111,7 +50,7 @@ gulp.task('index.html', function () {
         .src(
           [ 'libs/codemirror/lib/codemirror.css'
           , 'libs/switchery/dist/switchery.min.css'
-          , 'blocks/**/*.css'
+          , 'pages/editor/blocks/**/*.css'
           ]
         )
         .pipe(concat('index.css'))
@@ -130,8 +69,8 @@ gulp.task('index.html', function () {
         , 'libs/share-codemirror/share-codemirror.js'
         , 'libs/codemirror/mode/javascript/javascript.js'
         , 'libs/switchery/dist/switchery.min.js'
-        , 'blocks/page/page.js'
-        , 'blocks/**/*.js'
+        , 'pages/editor/blocks/page/page.js'
+        , 'pages/editor/blocks/**/*.js'
         ]
       )
       .pipe(concat('index.js'))
@@ -143,31 +82,91 @@ gulp.task('index.html', function () {
 
 
 
-gulp.task('watch', function () {
-  watch([ 'blocks/**/*.html'
-        , 'blocks/**/*.css'
-        , 'blocks/**/*.js']
-        , function () {
-    gulp.start('index.html')
-  })
+
+gulp.task('login.html', function () {
+  streamqueue(
+    { objectMode: true }
+    //, gulp.src('pages/login/blocks/form/form.html')
+    , gulp
+      .src('pages/login/blocks/**/*.html')
+      //.pipe(gulpIgnore.exclude('**/page.html'))
+      /*.pipe(wrap('<script '
+          + 'type="template" '
+          + 'id="<%= file.path.replace(/^.*\\/([^/]+)$/, \'$1\') %>">'
+          + '<%= file.contents %>'
+          + '</script>'
+      ))*/
+    , gulp
+        .src(
+          [ 'libs/bootstrap/dist/css/bootstrap.min.css'
+          , 'pages/login/blocks/**/*.css' ]
+        )
+        .pipe(concat('index.css'))
+        .pipe(autoprefixer(
+          { browsers: ['last 3 versions']
+          , cascade: true
+          }
+        ))
+        .pipe(wrap('<style><%= contents %></style>'))
+    , gulp
+      .src(
+        [ 'libs/jquery/dist/jquery.min.js'
+        , 'libs/bootstrap/dist/js/bootstrap.min.js'
+        , 'pages/login/blocks/page/page.js'
+        , 'pages/login/blocks/**/*.js'
+        ]
+      )
+      .pipe(concat('index.js'))
+      .pipe(wrap('<script><%= contents %></script>'))
+  )
+    .pipe(concat('login.html'))
+    .pipe(gulp.dest('./views'))
 })
 
-gulp.task('test', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma.conf.js',
-    singleRun: true
-  }, done)
+
+gulp.task('dashboard.html', function () {
+  streamqueue(
+    { objectMode: true }
+    //, gulp.src('pages/login/blocks/form/form.html')
+    , gulp
+      .src('pages/dashboard/blocks/**/*.html')
+      //.pipe(gulpIgnore.exclude('**/page.html'))
+      /*.pipe(wrap('<script '
+          + 'type="template" '
+          + 'id="<%= file.path.replace(/^.*\\/([^/]+)$/, \'$1\') %>">'
+          + '<%= file.contents %>'
+          + '</script>'
+      ))*/
+    , gulp
+        .src(
+          [ 'libs/bootstrap/dist/css/bootstrap.min.css'
+          , 'pages/dashboard/blocks/**/*.css' ]
+        )
+        .pipe(concat('index.css'))
+        .pipe(autoprefixer(
+          { browsers: ['last 3 versions']
+          , cascade: true
+          }
+        ))
+        .pipe(wrap('<style><%= contents %></style>'))
+    , gulp
+      .src(
+        [ 'libs/jquery/dist/jquery.min.js'
+        , 'libs/bootstrap/dist/js/bootstrap.min.js'
+        , 'pages/dashboard/blocks/page/page.js'
+        , 'pages/dashboard/blocks/**/*.js'
+        ]
+      )
+      .pipe(concat('index.js'))
+      .pipe(wrap('<script><%= contents %></script>'))
+  )
+    .pipe(concat('dashboard.html'))
+    .pipe(gulp.dest('./views'))
 })
 
-gulp.task('tdd', function (done) {
-  karma.start({
-    configFile: __dirname + '/karma.conf.js'
-  }, done)
-})
 
 
-gulp.task('default', runSequence( 'config', 'index.html'))
 
 
-gulp.task('watch', ['config', 'compress', 'index.min.html', 'watch'])
-gulp.task('nominify', ['config', 'index.html'])
+gulp.task('default', runSequence( 'config', 'login.html', 'dashboard.html', 'editor.html'))
+
