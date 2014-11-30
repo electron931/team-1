@@ -28,13 +28,27 @@ Team1 = {
    * @returns {jQuery.Deferred}
    */
   , auth: function () {
-    var user = {
-      title: window.prompt('Your name:')
-    }
 
-    this.__user = user
+    return $.ajax({ type: "POST"
+            , url: window.location.origin + '/api/getCurrentUser'
+            , success: function(user) {
+                console.log('success')
+                if (user != null) {
+                  user = JSON.parse(user)
+                  console.log(user)
+                  var rosterUser = {
+                    title: user.username
+                  }
 
-    return $.Deferred().resolve(user).promise()
+                  Team1.__user = rosterUser
+
+                  //return $.Deferred().resolve(rosterUser).promise()
+                }
+            }
+            , fail: function() {
+                console.log('error')
+            }
+        })
   }
 
   /**

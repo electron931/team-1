@@ -6,7 +6,7 @@ var path = require('path')
 
 
 
-exports.getDocuments = function(req, res, next) {
+exports.getUserDocuments = function(req, res, next) {
   if (!req.session.user) {
     return null
   }
@@ -15,8 +15,6 @@ exports.getDocuments = function(req, res, next) {
     if (err) return console.log(err);
     res.end(JSON.stringify(documents))
   })
-
-  
 }
 
 
@@ -37,7 +35,18 @@ exports.createDocument = function(req, res, next) {
     res.end(JSON.stringify(document));
   })
 
+}
 
+
+exports.getCurrentUser = function(req, res, next) {
+  if (!req.session.user) {
+    return null
+  }
+
+  User.findById(req.session.user, function (err, user){
+    if (err) return console.log(err);
+    res.end(JSON.stringify(user));
+  });
   
 }
 

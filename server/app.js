@@ -7,17 +7,23 @@ var express = require('express')
   , app = express()
 
 
+
+app.engine('ejs', require('ejs-locals'));
+app.set('views', path.join(__dirname, 'template'));
+app.set('view engine', 'ejs');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, 'views')));
+
+//app.use(express.static(path.join(__dirname, '../public_resources')));
 
 app.use(expressSession({secret: 'mySecretKey'}));
 
 app.use(require('./middleware/sendHttpError'))
 
 require('./routes')(app)     //main routes for app
-
+  
 
 /// catch 404 and forwarding to error handler
 /*app.use(function(req, res, next) {

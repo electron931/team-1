@@ -10,6 +10,7 @@ module.exports = function(app) {
     app.post('/auth/signup', require('./auth').signup)
     app.get('/auth/logout', checkAuth, require('./auth').logout)
 
-    app.get('/getDocuments', checkAuth, require('./api').getDocuments)
+    app.post('/api/getUserDocuments', checkAuth, require('./api').getUserDocuments)
+    app.post('/api/getCurrentUser', checkAuth, require('./api').getCurrentUser)
     app.get('/createDocument', checkAuth, require('./api').createDocument)
 }
