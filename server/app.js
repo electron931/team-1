@@ -8,9 +8,6 @@ var express = require('express')
 
 
 
-app.engine('ejs', require('ejs-locals'));
-app.set('views', path.join(__dirname, 'template'));
-app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());

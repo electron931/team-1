@@ -149,8 +149,7 @@ Team1.Editor.prototype.addHandlerToThemeOption = function () {
 
 Team1.Editor.prototype.setTheme = function (theme) {
   var self = this
-
-  $.get("/theme", {name: theme})
+  $.get("/theme?name=" + theme)
     .done(function (data) {
       $(".theme_style").text(JSON.parse(data))
       self.codeEditor.setOption("theme", theme)

@@ -5,6 +5,7 @@ module.exports = function(app) {
     app.get('/editor', checkAuth, require('./editor').get)
     app.get('/dashboard', checkAuth, require('./dashboard').get)
     app.get('/auth', require('./auth').get)
+    app.get('/theme', require('./theme').get)
 
     app.post('/auth/login', require('./auth').login)
     app.post('/auth/signup', require('./auth').signup)
