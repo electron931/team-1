@@ -1,38 +1,19 @@
 #WingPad
 
-![David](https://david-dm.org/yandex-shri-minsk-2014/team-1.png)
-[![Issue Stats](http://issuestats.com/github/yandex-shri-minsk-2014/team-1/badge/pr)](http://issuestats.com/github/yandex-shri-minsk-2014/team-1)
-[![Issue Stats](http://issuestats.com/github/yandex-shri-minsk-2014/team-1/badge/issue)](http://issuestats.com/github/yandex-shri-minsk-2014/team-1)
 
-Collaborative real-time code editor
 
-## Installing and running
+## Что нового
 
-Navigate to the app folder and type following commands:
+* авторизация пользователей
+* создание/удаление документов
+* возможность просмотра и редактирования документов
 
-* `npm install`  -- install all dependencies from package.json
-* `bower install` -- install all dependencies from bower.json
-* `npm run make` -- run gulp
-* `node server.js` -- run server
 
-## Dependencies:
+## Более конкретно
 
-Text editor implemented in JavaScript for the browser:
+* серверная часть была переписана с использованием expressjs (`/server/app.js`, `/server/middleware`, `/server/models/index.js`, `/server/routes`, `/server/utils`). 
+* для хранения данных используется mongodb
+* добавлены две страницы - страница авторизации и главная, где отображаются созданные документы. По нажатию на существующий документ открывается редактор с содержимым документа. (папка `/blocks` перешла в `/pages/editor`, другие страницы, соответственно: `/pages/dashboard` и `/pages/auth`)
 
-[Codemirror](http://codemirror.net/)
 
-Operational Transform library:
-
-[ShareJS](http://sharejs.org/)
-
-Websocket library:
-
-[Websocket](https://github.com/einaros/ws)
-
-## Project structure:
-
-`blocks/` -- frontend. Client code (html, css, js) should be placed into appropriate blocks
-
-`config/` -- basic app config (currently - port numbers)
-
-`server/` -- backend. Entity descriptions (user, document) and request processing logic (e.g. operational transformation).
+P.S. на данный момент (02.12.2014) реализация неполная и код слегка хромающий. В ближайшее время это будет исправлено.
