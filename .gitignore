@@ -11,6 +11,7 @@ npm-debug.log
 server/savedDocuments
 dist
 views
+config/current.json
 
 #deployment
 .deploy
