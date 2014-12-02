@@ -4,7 +4,7 @@ $( document ).ready(function() {
             , success: function(documents) {
                 console.log('success')
                 documents = JSON.parse(documents)
-                var documentsList = $('.documentsList');
+                var documentsList = $('.documentsList')
                 for (var i = 0; i < documents.length; i++) {
                   documentsList.append(
                     '<li class="documentItem" id="' + documents[i]._id + '"><a href="' 

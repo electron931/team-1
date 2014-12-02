@@ -13,7 +13,7 @@ exports.getUserDocuments = function (req, res, next) {
   }
 
   Document.getUserDocuments(req.session.user, function (err, documents) {
-    if (err) return console.log(err)
+    if (err) return next(err)
     res.end(JSON.stringify(documents))
   })
 }
@@ -31,8 +31,7 @@ exports.createDocument = function (req, res, next) {
   })
 
   document.save(function (err, document) {
-    if (err) return console.log(err)
-    //res.end(JSON.stringify(document))
+    if (err) return next(err)
     console.log(document)
     res.redirect('/editor#' + document._id)
   })
@@ -46,7 +45,7 @@ exports.getCurrentUser = function (req, res, next) {
   }
 
   User.findById(req.session.user, function (err, user){
-    if (err) return console.log(err)
+    if (err) return next(err)
     res.end(JSON.stringify(user))
   })
   
@@ -64,7 +63,7 @@ exports.deleteDocument = function (req, res, next) {
     console.log(docId)
 
     Document.findById(docId).remove(function(err) {
-      if (err) return console.log(err)
+      if (err) return next(err)
 
       res.end('ok')
     })
@@ -85,12 +84,12 @@ exports.saveDocument = function (req, res, next) {
 
     //rewrite using async
     Document.findById(docId, function(err, doc) {
-      if (err) return console.log(err)
+      if (err) return next(err)
 
       doc.modificationDate = new Date()
 
       doc.save(function (err, document) {
-        if (err) return console.log(err)
+        if (err) return next(err)
         
 
         if (!fs.existsSync(__dirname + '/../savedDocuments')) {
@@ -102,8 +101,8 @@ exports.saveDocument = function (req, res, next) {
 
         fs.writeFile( __dirname + '/../savedDocuments/' 
           + req.session.user + '/' + doc.name, docContent, function(err) {
-            if (err) return console.log(err)
-
+            if (err) return next(err)
+              
             res.end('ok')   //laconic answer, rewrite
         } )
 
