@@ -83,14 +83,14 @@ gulp.task('editor.html', function () {
 
 
 
-gulp.task('login.html', function () {
+gulp.task('auth.html', function () {
   streamqueue(
     { objectMode: true }
     , gulp
-      .src('pages/login/blocks/**/*.html')
+      .src('pages/auth/blocks/**/*.html')
     , gulp
         .src(
-          [ 'pages/login/blocks/**/*.css' ]
+          [ 'pages/auth/blocks/**/*.css' ]
         )
         .pipe(concat('index.css'))
         .pipe(autoprefixer(
@@ -101,14 +101,14 @@ gulp.task('login.html', function () {
         .pipe(wrap('<style><%= contents %></style>'))
     , gulp
       .src(
-        [ 'pages/login/blocks/page/page.js'
-        , 'pages/login/blocks/**/*.js'
+        [ 'pages/auth/blocks/page/page.js'
+        , 'pages/auth/blocks/**/*.js'
         ]
       )
       .pipe(concat('index.js'))
       .pipe(wrap('<script><%= contents %></script>'))
   )
-    .pipe(concat('login.html'))
+    .pipe(concat('auth.html'))
     .pipe(gulp.dest('./views'))
 })
 
@@ -146,5 +146,5 @@ gulp.task('dashboard.html', function () {
 
 
 
-gulp.task('default', runSequence( 'config', 'login.html', 'dashboard.html', 'editor.html'))
+gulp.task('default', runSequence( 'config', 'auth.html', 'dashboard.html', 'editor.html'))
 
