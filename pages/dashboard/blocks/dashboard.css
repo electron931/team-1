@@ -348,3 +348,34 @@ table.dataTable thead .sorting:after {
     color: #df8a13;
 }
 
+.documentsList {
+    list-style: none;
+}
+
+.documentItem {
+    width: 100%;
+    font-size: 18px;
+    border-bottom: 1px solid #e7e7e7;
+    padding: 10px 15px;
+}
+
+.documentItem:hover {
+    background-color: #89C4F4;
+}
+
+.documentItem a {
+    display: inline-block;
+    width: 95%;
+}
+
+.documentItem a:hover {
+    text-decoration: none;
+}
+
+.deleteDocument {
+    display: inline-block;
+}
+
+.deleteDocument:hover {
+    background-color: #fff;
+}

@@ -3,24 +3,29 @@ var express = require('express')
   , cookieParser = require('cookie-parser')
   , bodyParser = require('body-parser')
   , HttpError = require('./utils/error').HttpError
-  , expressSession = require('express-session')
+  , config = require('../config')
+  , session = require('express-session')
   , app = express()
-
-
 
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 
-//app.use(express.static(path.join(__dirname, '../public_resources')));
 
-app.use(expressSession({secret: 'mySecretKey'}));
+var sessionStore = require('./utils/sessionStore')
+
+app.use(session({
+    secret: config.session.secret,
+    key: config.session.key,
+    cookie: config.session.cookie,
+    store: sessionStore
+}))
+
 
 app.use(require('./middleware/sendHttpError'))
 
 require('./routes')(app)     //main routes for app
-  
 
 /// catch 404 and forwarding to error handler
 /*app.use(function(req, res, next) {

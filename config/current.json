@@ -15,5 +15,14 @@
                 }
             }
         }
+    },
+  "session" : {
+        "secret" : "wingpad editor",
+        "key" : "sid",
+        "cookie" : {
+            "path" : "/",
+            "httpOnly" : true,
+            "maxAge" : null
+        }
     }
 }

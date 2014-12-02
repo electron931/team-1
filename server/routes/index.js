@@ -11,7 +11,9 @@ module.exports = function(app) {
     app.post('/auth/signup', require('./auth').signup)
     app.get('/auth/logout', checkAuth, require('./auth').logout)
 
+    app.post('/api/saveDocument', checkAuth, require('./api').saveDocument)
     app.post('/api/getUserDocuments', checkAuth, require('./api').getUserDocuments)
     app.post('/api/getCurrentUser', checkAuth, require('./api').getCurrentUser)
-    app.get('/createDocument', checkAuth, require('./api').createDocument)
+    app.post('/api/deleteDocument', checkAuth, require('./api').deleteDocument)
+    app.get('/api/createDocument', checkAuth, require('./api').createDocument)
 }

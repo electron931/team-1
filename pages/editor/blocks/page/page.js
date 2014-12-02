@@ -18,7 +18,7 @@ Team1 = {
     this.auth().done(this.openDocument)
   }
   , getDocId: function () {
-    return this.getDocIdFromHash() || _.random(10000000000)
+    return this.getDocIdFromHash()
   }
   , getDocIdFromHash: function () {
     return window.location.hash.replace('#', '')
@@ -41,8 +41,6 @@ Team1 = {
                   }
 
                   Team1.__user = rosterUser
-
-                  //return $.Deferred().resolve(rosterUser).promise()
                 }
             }
             , fail: function() {
@@ -152,14 +150,13 @@ Team1 = {
 
   , saveDocument: function () {
     var docContentObj = {
-      operation: 'save'
-      , docName: this.documentId
-      , docContent: this.Editor.codeEditor.getValue()
+      docId: this.documentId
+    , docContent: this.Editor.codeEditor.getValue()
     }
 
     $.ajax({ type: "POST"
-            , url: window.location.pathname
-            , data: JSON.stringify(docContentObj)
+            , url: window.location.origin + '/api/saveDocument'
+            , data: docContentObj
             , success: function(data) {
                 console.log('success')
             }

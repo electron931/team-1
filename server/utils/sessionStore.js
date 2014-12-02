@@ -1,4 +1,4 @@
-var mongoose = require('mongoose')
+var mongoose = require('./mongoose')
   , session = require('express-session')
   , MongoStore = require('connect-mongo')(session)
 

@@ -81,12 +81,6 @@ var documentSchema = new Schema({
   name: {
     type: String
   , required: true
-  , unique: true
-  }
-, link: {
-    type: String
-  , required: true
-  , unique: true
   }
 , creationDate: {
     type: Date
@@ -107,7 +101,7 @@ documentSchema.statics.getUserDocuments = function(userId, callback) {
     Document.find({ creator: userId }, function(err, documents) {
       if (err) return callback(err)
       return callback(null, documents)
-    });
+    })
 }
 
 

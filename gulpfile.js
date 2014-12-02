@@ -86,20 +86,11 @@ gulp.task('editor.html', function () {
 gulp.task('login.html', function () {
   streamqueue(
     { objectMode: true }
-    //, gulp.src('pages/login/blocks/form/form.html')
     , gulp
       .src('pages/login/blocks/**/*.html')
-      //.pipe(gulpIgnore.exclude('**/page.html'))
-      /*.pipe(wrap('<script '
-          + 'type="template" '
-          + 'id="<%= file.path.replace(/^.*\\/([^/]+)$/, \'$1\') %>">'
-          + '<%= file.contents %>'
-          + '</script>'
-      ))*/
     , gulp
         .src(
-          [ 'libs/bootstrap/dist/css/bootstrap.min.css'
-          , 'pages/login/blocks/**/*.css' ]
+          [ 'pages/login/blocks/**/*.css' ]
         )
         .pipe(concat('index.css'))
         .pipe(autoprefixer(
@@ -110,9 +101,7 @@ gulp.task('login.html', function () {
         .pipe(wrap('<style><%= contents %></style>'))
     , gulp
       .src(
-        [ 'libs/jquery/dist/jquery.min.js'
-        , 'libs/bootstrap/dist/js/bootstrap.min.js'
-        , 'pages/login/blocks/page/page.js'
+        [ 'pages/login/blocks/page/page.js'
         , 'pages/login/blocks/**/*.js'
         ]
       )
@@ -127,20 +116,11 @@ gulp.task('login.html', function () {
 gulp.task('dashboard.html', function () {
   streamqueue(
     { objectMode: true }
-    //, gulp.src('pages/login/blocks/form/form.html')
     , gulp
       .src('pages/dashboard/blocks/**/*.html')
-      //.pipe(gulpIgnore.exclude('**/page.html'))
-      /*.pipe(wrap('<script '
-          + 'type="template" '
-          + 'id="<%= file.path.replace(/^.*\\/([^/]+)$/, \'$1\') %>">'
-          + '<%= file.contents %>'
-          + '</script>'
-      ))*/
     , gulp
         .src(
-          [ 'libs/bootstrap/dist/css/bootstrap.min.css'
-          , 'pages/dashboard/blocks/**/*.css' ]
+          [ 'pages/dashboard/blocks/**/*.css' ]
         )
         .pipe(concat('index.css'))
         .pipe(autoprefixer(
@@ -151,9 +131,7 @@ gulp.task('dashboard.html', function () {
         .pipe(wrap('<style><%= contents %></style>'))
     , gulp
       .src(
-        [ 'libs/jquery/dist/jquery.min.js'
-        , 'libs/bootstrap/dist/js/bootstrap.min.js'
-        , 'pages/dashboard/blocks/page/page.js'
+        [ 'pages/dashboard/blocks/page/page.js'
         , 'pages/dashboard/blocks/**/*.js'
         ]
       )
