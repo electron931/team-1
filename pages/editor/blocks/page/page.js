@@ -71,7 +71,6 @@ Team1 = {
       this.Roster.fillList(document.users)
 
     if (document.id) {
-      window.location.hash = '#' + document.id
       if (Team1.Roster.getUsersCount() == 1) {
         this.loadDocument(document.id)
       }
@@ -167,15 +166,11 @@ Team1 = {
   }
 
   , loadDocument: function (docId) {
-    var docContentObj = {
-      operation: 'get'
-      , docName: this.documentId
-    }
-
+    
     $.ajax({ type: "POST"
-            , url: window.location.pathname
+            , url: window.location.origin + '/api/loadDocument'
             , dataType: 'json'
-            , data: JSON.stringify(docContentObj)
+            , data: { docId: this.documentId }
             , success: function(doc) {
                 console.log('success')
                 console.log(doc.value);

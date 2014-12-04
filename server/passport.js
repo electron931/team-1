@@ -19,7 +19,6 @@ passport.use(new GithubStrategy({
             return done(null, user) // user found, return that user
           } 
           else {
-
             // if there is no user found with that github id, create them
             var newUser = new User()
             newUser.github.id = profile.id

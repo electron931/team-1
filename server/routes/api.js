@@ -55,9 +55,31 @@ exports.deleteDocument = function (req, res, next) {
 
 }
 
+//rewrite
+exports.loadDocument = function (req, res, next) {
+  var docContent = getDocument(req.body.docId, req)
+  console.log('load')
+  console.log(docContent)
+  var docObj = {
+    value: docContent
+  }
+
+  var docJSON = JSON.stringify(docObj)
+  
+  if (docJSON != null) {
+    //console.log(docJSON)
+    res.end(docJSON)
+  }
+  else {
+    console.log('nothing');
+    res.end()
+  }
+
+}
+
 
 exports.saveDocument = function (req, res, next) {
-
+  console.log('save')
   console.log(req.body)
   var docId = req.body.docId
   var docContent = req.body.docContent
@@ -82,7 +104,7 @@ exports.saveDocument = function (req, res, next) {
         }
 
         fs.writeFile( __dirname + '/../savedDocuments/' 
-          + req.session.passport.user._id + '/' + doc.name, docContent, function(err) {
+          + req.session.passport.user._id + '/' + doc._id, docContent, function(err) {
             if (err) return next(err)
               
             res.end('ok')   //laconic answer, rewrite
@@ -91,6 +113,29 @@ exports.saveDocument = function (req, res, next) {
       })
 
     })
+  }
+
+}
+
+
+
+
+function getDocument(docId, req) {
+  if (!fs.existsSync(__dirname + '/../savedDocuments')) {
+    fs.mkdirSync(__dirname + '/../savedDocuments')
+    if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
+      fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
+    }
+  }
+
+
+  var pathToDoc = __dirname + '/../savedDocuments/' + req.session.passport.user._id + '/' + docId
+
+  if (fs.existsSync(pathToDoc)) {
+    return fs.readFileSync(pathToDoc, "utf8")
+  }
+  else {
+    return null
   }
 
 }

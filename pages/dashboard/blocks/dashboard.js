@@ -4,11 +4,12 @@ $( document ).ready(function() {
             , success: function(documents) {
                 console.log('success')
                 documents = JSON.parse(documents)
+                console.log(documents[0]);
                 var documentsList = $('.documentsList')
                 for (var i = 0; i < documents.length; i++) {
                   documentsList.append(
-                    '<li class="documentItem" id="' + documents[i]._id + '"><a href="' 
-                    + documents[i].link + '">' + documents[i].name +
+                    '<li class="documentItem" id="' + documents[i]._id + '"><a href="/editor#' 
+                    + documents[i]._id + '">' + documents[i].name +
                      '</a><span class="glyphicon glyphicon-trash pull-right deleteDocument"></span></li>');
                 }
             }

@@ -15,5 +15,6 @@ module.exports = function(app) {
     app.post('/api/getUserDocuments', checkAuth, require('./api').getUserDocuments)
     app.post('/api/getCurrentUser', checkAuth, require('./api').getCurrentUser)
     app.post('/api/deleteDocument', checkAuth, require('./api').deleteDocument)
+    app.post('/api/loadDocument', checkAuth, require('./api').loadDocument)
     app.get('/api/createDocument', checkAuth, require('./api').createDocument)
 }
