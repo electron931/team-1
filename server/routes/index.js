@@ -8,10 +8,8 @@ module.exports = function(app) {
 
     app.get('/auth/login', require('./auth').login)
     app.get('/auth/github', require('./auth').githubAuth)
-    app.get('/auth/github/success', require('./auth').githubSuccess)
-    app.get('/auth/github/error', require('./auth').githubError)
     app.get('/auth/github/callback', require('./auth').githubCallback)
-    app.get('/auth/logout', require('./auth').logout)
+    app.get('/auth/logout', checkAuth, require('./auth').logout)
 
     app.post('/api/saveDocument', checkAuth, require('./api').saveDocument)
     app.post('/api/getUserDocuments', checkAuth, require('./api').getUserDocuments)
