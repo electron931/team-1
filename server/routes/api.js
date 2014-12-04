@@ -8,11 +8,8 @@ var path = require('path')
 
 
 exports.getUserDocuments = function (req, res, next) {
-  if (!req.session.user) {
-    return null
-  }
 
-  Document.getUserDocuments(req.session.user, function (err, documents) {
+  Document.getUserDocuments(req.session.passport.user._id, function (err, documents) {
     if (err) return next(err)
     res.end(JSON.stringify(documents))
   })
@@ -21,18 +18,14 @@ exports.getUserDocuments = function (req, res, next) {
 
 
 exports.createDocument = function (req, res, next) {
-  if (!req.session.user) {
-    return null
-  }
-
   var document = new Document ({
     name: '' + Math.random()      //need to generate something else. rewrite
-  , creator: req.session.user
+  , creator: req.session.passport.user._id
   })
 
   document.save(function (err, document) {
     if (err) return next(err)
-    console.log(document)
+
     res.redirect('/editor#' + document._id)
   })
 
@@ -40,11 +33,7 @@ exports.createDocument = function (req, res, next) {
 
 
 exports.getCurrentUser = function (req, res, next) {
-  if (!req.session.user) {
-    return null
-  }
-
-  User.findById(req.session.user, function (err, user){
+  User.findById(req.session.passport.user._id, function (err, user){
     if (err) return next(err)
     res.end(JSON.stringify(user))
   })
@@ -53,10 +42,6 @@ exports.getCurrentUser = function (req, res, next) {
 
 
 exports.deleteDocument = function (req, res, next) {
-  if (!req.session.user) {
-    return null
-  }
-
   var docId = req.body.docId
 
   if (docId) {
@@ -73,9 +58,7 @@ exports.deleteDocument = function (req, res, next) {
 
 
 exports.saveDocument = function (req, res, next) {
-  if (!req.session.user) {
-    return null
-  }
+
   console.log(req.body)
   var docId = req.body.docId
   var docContent = req.body.docContent
@@ -94,13 +77,13 @@ exports.saveDocument = function (req, res, next) {
 
         if (!fs.existsSync(__dirname + '/../savedDocuments')) {
           fs.mkdirSync(__dirname + '/../savedDocuments')
-          if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.user)) {
-            fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.user)
+          if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
+            fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
           }
         }
 
         fs.writeFile( __dirname + '/../savedDocuments/' 
-          + req.session.user + '/' + doc.name, docContent, function(err) {
+          + req.session.passport.user._id + '/' + doc.name, docContent, function(err) {
             if (err) return next(err)
               
             res.end('ok')   //laconic answer, rewrite

@@ -37,7 +37,7 @@ Team1 = {
                   user = JSON.parse(user)
                   console.log(user)
                   var rosterUser = {
-                    title: user.username
+                    title: user.github.username
                   }
 
                   Team1.__user = rosterUser
