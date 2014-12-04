@@ -127,10 +127,8 @@ exports.saveDocument = function (req, res, next) {
 function createFolderIfNotExists (req) {
 
   if (!fs.existsSync(__dirname + '/../savedDocuments')) {
-    console.log('ha');
     fs.mkdirSync(__dirname + '/../savedDocuments')
     if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
-      console.log('la')
       fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
     }
   }
@@ -144,7 +142,6 @@ function getDocument(docId, req) {
   var pathToDoc = __dirname + '/../savedDocuments/' + req.session.passport.user._id + '/' + docId
 
   if (fs.existsSync(pathToDoc)) {
-    console.log('exists');
     return fs.readFileSync(pathToDoc, "utf8")
   }
   else {
