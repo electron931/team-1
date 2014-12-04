@@ -29,10 +29,10 @@ passport.use(new GithubStrategy({
 
             // save our user to the database
             newUser.save(function(err) {
-                if (err) throw err;
+                if (err) throw err
 
                 // if successful, return the new user
-                return done(null, newUser);
+                return done(null, newUser)
             })
           }
 
@@ -44,19 +44,17 @@ passport.use(new GithubStrategy({
 
 
 passport.serializeUser(function(user, done) {
-  // for the time being tou can serialize the user 
-  // object {accessToken: accessToken, profile: profile }
-  // In the real app you might be storing on the id like user.profile.id 
-  done(null, user);
-});
+  done(null, user)
+})
+
 
 passport.deserializeUser(function(user, done) {
   User.findOne({ 'github.id' : user.github.id }, function(err, user) {
-    if (err) return done(err);
+    if (err) return done(err)
 
-    done(null, user);
+    done(null, user)
   })
-});
+})
 
 
 

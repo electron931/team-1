@@ -8,7 +8,6 @@ var path = require('path')
 
 
 exports.getUserDocuments = function (req, res, next) {
-
   Document.getUserDocuments(req.session.passport.user._id, function (err, documents) {
     if (err) return next(err)
     res.end(JSON.stringify(documents))
