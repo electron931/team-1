@@ -4,6 +4,7 @@ var path = require('path')
   , HttpError = require('../utils/error').HttpError
   , AuthError = require('../models').AuthError
   , fs = require('fs')
+  , async = require('async')
 
 
 
@@ -39,27 +40,31 @@ exports.getCurrentUser = function (req, res, next) {
   
 }
 
-
 exports.deleteDocument = function (req, res, next) {
   var docId = req.body.docId
 
   if (docId) {
-    console.log(docId)
 
     Document.findById(docId).remove(function(err) {
       if (err) return next(err)
 
-      res.end('ok')
+        //remove document from disk
+        fs.unlink(__dirname + '/../savedDocuments/' + 
+          req.session.passport.user._id + '/' + docId, function (err) {
+
+          if (err) return next(err)
+          res.end('ok')
+        })
+      
     })
   }
 
 }
 
-//rewrite
+
 exports.loadDocument = function (req, res, next) {
   var docContent = getDocument(req.body.docId, req)
-  console.log('load')
-  console.log(docContent)
+
   var docObj = {
     value: docContent
   }
@@ -67,11 +72,9 @@ exports.loadDocument = function (req, res, next) {
   var docJSON = JSON.stringify(docObj)
   
   if (docJSON != null) {
-    //console.log(docJSON)
     res.end(docJSON)
   }
   else {
-    console.log('nothing');
     res.end()
   }
 
@@ -79,59 +82,69 @@ exports.loadDocument = function (req, res, next) {
 
 
 exports.saveDocument = function (req, res, next) {
-  console.log('save')
-  console.log(req.body)
   var docId = req.body.docId
   var docContent = req.body.docContent
 
-  if (docId) {
+  if (!docId) {
+    res.end()
+    return
+  }
 
-    //rewrite using async
-    Document.findById(docId, function(err, doc) {
-      if (err) return next(err)
+  async.waterfall([
+    function(callback) {
+      Document.findById(docId, function(err, doc) {
+        if (err) return callback(err)
 
-      doc.modificationDate = new Date()
-
-      doc.save(function (err, document) {
-        if (err) return next(err)
-        
-
-        if (!fs.existsSync(__dirname + '/../savedDocuments')) {
-          fs.mkdirSync(__dirname + '/../savedDocuments')
-          if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
-            fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
-          }
-        }
-
-        fs.writeFile( __dirname + '/../savedDocuments/' 
-          + req.session.passport.user._id + '/' + doc._id, docContent, function(err) {
-            if (err) return next(err)
-              
-            res.end('ok')   //laconic answer, rewrite
-        } )
-
+        callback(null, doc);
       })
+    }
+  , function(doc, callback) {
+      doc.modificationDate = new Date()
+      doc.save(function(err, document) {
+        if (err) return callback(err)
 
-    })
+        createFolderIfNotExists(req)
+        callback(null, document)
+      })
+    }
+  , function(document, callback) {
+      fs.writeFile( __dirname + '/../savedDocuments/' 
+        + req.session.passport.user._id + '/' + document._id, docContent, function(err) {
+          if (err) return callback(err)
+
+          callback(null, document)
+        })
+    }
+  ]
+  , function (err, result) {
+      if (err) return next(err)
+      res.end('ok')   //laconic answer, rewrite
+  })
+
+}
+
+
+function createFolderIfNotExists (req) {
+
+  if (!fs.existsSync(__dirname + '/../savedDocuments')) {
+    console.log('ha');
+    fs.mkdirSync(__dirname + '/../savedDocuments')
+    if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
+      console.log('la')
+      fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
+    }
   }
 
 }
 
 
-
-
 function getDocument(docId, req) {
-  if (!fs.existsSync(__dirname + '/../savedDocuments')) {
-    fs.mkdirSync(__dirname + '/../savedDocuments')
-    if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
-      fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
-    }
-  }
-
+  createFolderIfNotExists(req)
 
   var pathToDoc = __dirname + '/../savedDocuments/' + req.session.passport.user._id + '/' + docId
 
   if (fs.existsSync(pathToDoc)) {
+    console.log('exists');
     return fs.readFileSync(pathToDoc, "utf8")
   }
   else {
