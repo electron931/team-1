@@ -6,6 +6,7 @@ var express = require('express')
   , config = require('../config')
   , session = require('express-session')
   , app = express()
+  , passport = require('./passport')
 
 
 app.use(bodyParser.json())
@@ -23,9 +24,14 @@ app.use(session({
 }))
 
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use(require('./middleware/sendHttpError'))
 
 require('./routes')(app)     //main routes for app
+
 
 
 // catch 404 and forwarding to error handler

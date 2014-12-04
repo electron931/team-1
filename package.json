@@ -49,7 +49,9 @@
     "mongoose": "^3.8.19",
     "async": "^0.9.0",
     "express-session": "^1.9.2",
-    "connect-mongo": "^0.4.1"
+    "connect-mongo": "^0.4.1",
+    "passport": "^0.2.1",
+    "passport-github": "^0.1.5"
   },
   "devDependencies": {
     "jscs": "~1.7.3",

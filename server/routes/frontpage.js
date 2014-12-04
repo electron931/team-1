@@ -1,3 +1,3 @@
 exports.get = function(req, res) {
-  res.redirect('auth')
+  res.redirect('/auth/login')
 }

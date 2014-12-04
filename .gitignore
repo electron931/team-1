@@ -12,6 +12,7 @@ server/savedDocuments
 dist
 views
 config/current.json
+config/oauth.js
 
 #deployment
 .deploy
