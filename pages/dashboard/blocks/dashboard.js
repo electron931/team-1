@@ -8,9 +8,9 @@ $( document ).ready(function() {
                 var documentsList = $('.documentsList')
                 for (var i = 0; i < documents.length; i++) {
                   documentsList.append(
-                    '<li class="documentItem" id="' + documents[i]._id + '"><a href="/editor#' 
+                    '<li class="documentItem"><a class="documentLink" href="/editor#' 
                     + documents[i]._id + '">' + documents[i].name +
-                     '</a><span class="glyphicon glyphicon-trash pull-right deleteDocument"></span></li>');
+                     '</a><span id="' + documents[i]._id + '" class="glyphicon glyphicon-trash pull-right deleteDocument rotate"></span></li>');
                 }
             }
             , fail: function() {
@@ -22,8 +22,10 @@ $( document ).ready(function() {
 
 
 $(document).on('click','.deleteDocument', function(){
-      var isDelete = confirm("Are you sure?");
-      var docId = $('.documentItem').attr('id')
+      var isDelete = confirm("Are you sure?")
+        , thisElement = $(this)
+        , docId = thisElement.attr('id')
+      
       if (isDelete) {
         $.ajax({ type: "POST"
         , url: window.location.origin + '/api/deleteDocument'
@@ -32,7 +34,7 @@ $(document).on('click','.deleteDocument', function(){
         },
         success: function(data) {
           console.log('success')
-          $('#' + docId).remove()
+          thisElement.parent().remove()
         },
         fail: function() {
           console.log('error')

@@ -356,26 +356,46 @@ table.dataTable thead .sorting:after {
     width: 100%;
     font-size: 18px;
     border-bottom: 1px solid #e7e7e7;
-    padding: 10px 15px;
 }
 
-.documentItem:hover {
+.documentLink:hover {
     background-color: #89C4F4;
 }
 
-.documentItem a {
+.documentLink {
     display: inline-block;
     width: 95%;
-}
-
-.documentItem a:hover {
     text-decoration: none;
+    padding: 10px 15px;
 }
 
 .deleteDocument {
     display: inline-block;
+    width: 5% !important;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px 0;
 }
 
 .deleteDocument:hover {
-    background-color: #fff;
+    cursor: pointer;
+}
+
+.rotate {
+    -webkit-transition-duration: 0.8s;
+    -moz-transition-duration: 0.8s;
+    -o-transition-duration: 0.8s;
+    transition-duration: 0.8s;
+     
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    -o-transition-property: -o-transform;
+    transition-property: transform;     
+    overflow:hidden;
+}  
+ 
+.rotate:hover {
+    -webkit-transform:rotate(360deg);
+    -moz-transform:rotate(360deg);
+    -o-transform:rotate(360deg);
 }

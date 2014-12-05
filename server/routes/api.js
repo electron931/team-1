@@ -1,8 +1,6 @@
 var path = require('path')
   , User = require('../models').User
   , Document = require('../models').Document
-  , HttpError = require('../utils/error').HttpError
-  , AuthError = require('../models').AuthError
   , fs = require('fs')
   , async = require('async')
 
@@ -19,7 +17,7 @@ exports.getUserDocuments = function (req, res, next) {
 
 exports.createDocument = function (req, res, next) {
   var document = new Document ({
-    name: '' + Math.random()      //need to generate something else. rewrite
+    name: 'New Document'
   , creator: req.session.passport.user._id
   })
 
@@ -63,27 +61,31 @@ exports.deleteDocument = function (req, res, next) {
 
 
 exports.loadDocument = function (req, res, next) {
-  var docContent = getDocument(req.body.docId, req)
+  Document.findById(req.body.docId, function(err, doc) {
+    if (err) return next(err)
 
-  var docObj = {
-    value: docContent
-  }
+    var docContent = getDocument(req.body.docId, req)
+      , docObj = {
+          name: doc.name
+        , value: docContent
+        }
+      , docJSON = JSON.stringify(docObj)
+    
+    if (docJSON != null) {
+      res.end(docJSON)
+    }
+    else {
+      res.end()
+    }
 
-  var docJSON = JSON.stringify(docObj)
-  
-  if (docJSON != null) {
-    res.end(docJSON)
-  }
-  else {
-    res.end()
-  }
-
+  })
 }
 
 
 exports.saveDocument = function (req, res, next) {
   var docId = req.body.docId
-  var docContent = req.body.docContent
+    , docName = req.body.docName
+    , docContent = req.body.docContent
 
   if (!docId) {
     res.end()
@@ -100,10 +102,11 @@ exports.saveDocument = function (req, res, next) {
     }
   , function(doc, callback) {
       doc.modificationDate = new Date()
+      doc.name = docName || 'New Document'
       doc.save(function(err, document) {
         if (err) return callback(err)
 
-        createFolderIfNotExists(req)
+        createFoldersIfNotExists(req)
         callback(null, document)
       })
     }
@@ -118,26 +121,26 @@ exports.saveDocument = function (req, res, next) {
   ]
   , function (err, result) {
       if (err) return next(err)
-      res.end('ok')   //laconic answer, rewrite
+      res.end('ok')
   })
 
 }
 
 
-function createFolderIfNotExists (req) {
+function createFoldersIfNotExists (req) {
 
   if (!fs.existsSync(__dirname + '/../savedDocuments')) {
     fs.mkdirSync(__dirname + '/../savedDocuments')
-    if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
-      fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
-    }
+  }
+  if (!fs.existsSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)) {
+    fs.mkdirSync(__dirname + '/../savedDocuments/' + req.session.passport.user._id)
   }
 
 }
 
 
 function getDocument(docId, req) {
-  createFolderIfNotExists(req)
+  createFoldersIfNotExists(req)
 
   var pathToDoc = __dirname + '/../savedDocuments/' + req.session.passport.user._id + '/' + docId
 

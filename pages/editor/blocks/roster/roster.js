@@ -16,7 +16,7 @@ Team1.Roster.prototype.remove = function (id) {
 
 Team1.Roster.prototype.fillList = function (usersList) {
   var _this = this
-
+  console.log(usersList);
   _.forEach(usersList, function (user) {
     _this.add(user)
   })

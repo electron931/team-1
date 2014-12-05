@@ -150,6 +150,7 @@ Team1 = {
   , saveDocument: function () {
     var docContentObj = {
       docId: this.documentId
+    , docName: $('.docNameInput').val()
     , docContent: this.Editor.codeEditor.getValue()
     }
 
@@ -172,9 +173,8 @@ Team1 = {
             , dataType: 'json'
             , data: { docId: this.documentId }
             , success: function(doc) {
-                console.log('success')
-                console.log(doc.value);
-                if (doc != null) {
+                $('.docNameInput').val(doc.name)
+                if (doc.value != null) {
                   Team1.Editor.codeEditor.getDoc().setValue(doc.value)
                 }
             }
