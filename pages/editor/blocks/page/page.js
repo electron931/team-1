@@ -193,6 +193,11 @@ $(document).ready(function () {
   Team1.start({
     socketUrl: 'http://' + Host
   })
+  $('.fontSizeSelect').on('change', function (e) {
+    var optionSelected = $("option:selected", this);
+    var fontSize = this.value;
+    $(".editor").css({fontSize: fontSize + 'px'});
+  })
 })
 
 window.onbeforeunload = function () {

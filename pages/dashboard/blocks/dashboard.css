@@ -360,6 +360,7 @@ table.dataTable thead .sorting:after {
 
 .documentLink:hover {
     background-color: #89C4F4;
+    text-decoration: none;
 }
 
 .documentLink {

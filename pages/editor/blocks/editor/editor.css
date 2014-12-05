@@ -29,7 +29,20 @@
   height: 26px;
   margin-top: 21px;
 }
+.header_docName {
+  padding: 0 16px;
+}
 .header__logo__name:hover {
   text-decoration: none;
   color: #fff;
+}
+.header_font {
+  padding: 0 14px;
+}
+.fontSizeSelect {
+  height: 26px;
+  margin-top: 21px;
+}
+.editor {
+  font-size: 12px;
 }
