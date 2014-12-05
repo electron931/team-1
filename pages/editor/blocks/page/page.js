@@ -35,7 +35,6 @@ Team1 = {
                 console.log('success')
                 if (user != null) {
                   user = JSON.parse(user)
-                  console.log(user)
                   var rosterUser = {
                     title: user.github.username
                   }
@@ -194,9 +193,10 @@ $(document).ready(function () {
     socketUrl: 'http://' + Host
   })
   $('.fontSizeSelect').on('change', function (e) {
-    var optionSelected = $("option:selected", this);
-    var fontSize = this.value;
-    $(".editor").css({fontSize: fontSize + 'px'});
+    var optionSelected = $("option:selected", this)
+    var fontSize = this.value
+    $(".CodeMirror").css({fontSize: fontSize + 'px'})
+    Team1.Editor.codeEditor.setOption("theme", $('.control__themelist option:selected').text())   //clumsy hack for proper text selection
   })
 })
 
